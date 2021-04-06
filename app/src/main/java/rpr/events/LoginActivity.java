@@ -30,6 +30,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static rpr.events.constants.Constants.EMAIL_REGEX;
+
 public class LoginActivity extends AppCompatActivity {
 
     EditText etEmail;
@@ -92,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s)  {
-                boolean iitrpr_email = etEmail.getText().toString().matches("[a-zA-Z0-9._-]+@iitrpr\\.ac\\.in");
+                boolean iitrpr_email = etEmail.getText().toString().matches(EMAIL_REGEX);
                 if (!iitrpr_email){
                     etEmail.setError("Invalid Email");
                 }

@@ -14,7 +14,8 @@
     <string name="categoryRegister_url">http://10.1.1.19/~2015csb1021/event/categoryRegister.php</string>
 
 
-    <string name="Register_url">http://10.1.1.19/~2015csb1021/event/Register.php</string>
+    <string name="Register_url">http://localhost:3000/api/stuff</string>
+
     <string name="Login_url">http://10.1.1.19/~2015csb1021/event/Login.php</string>
     <string name="usertypeRegister_url">http://10.1.1.19/~2015csb1021/event/usertypeRegister.php</string>
 
@@ -26,7 +27,7 @@
 
     <string name="changePassword_url">http://10.1.1.19/~2015csb1021/event/changePassword.php</string>
 
-    <string name="app_name">Events</string>
+    <string name="app_name">Event Management System</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->

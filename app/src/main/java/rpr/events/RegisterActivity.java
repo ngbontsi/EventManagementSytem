@@ -31,7 +31,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
+
+import static rpr.events.constants.Constants.EMAIL_REGEX;
+import static rpr.events.utils.EmailUtils.isValidMail;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -108,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s)  {
-                boolean iitrpr_email = etEmail.getText().toString().matches("[a-zA-Z0-9._-]+@iitrpr\\.ac\\.in");
+                boolean iitrpr_email = isValidMail(etEmail.getText().toString());
                 if (!iitrpr_email){
                     etEmail.setError("Invalid Email");
                 }
@@ -149,7 +151,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (etName.getText().toString().trim().equals("")){
                     Snackbar.make(v, "Please specify Name", Snackbar.LENGTH_SHORT).show();
                 }
-                else if(etEmail.getText().toString().trim().equals("") || !(etEmail.getText().toString().trim().matches("[a-zA-Z0-9._-]+@iitrpr\\.ac\\.in"))){
+                else if(etEmail.getText().toString().trim().equals("") || !(etEmail.getText().toString().trim().matches(EMAIL_REGEX))){
                     Snackbar.make(v, "Please specify valid Email", Snackbar.LENGTH_SHORT).show();
                 }
                 else if(etPassword.getText().toString().length() < 8){
@@ -286,4 +288,5 @@ public class RegisterActivity extends AppCompatActivity {
             queue.add(usertypeRequest);
 
     }
+
 }
