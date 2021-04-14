@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
+import com.google.gson.Gson;
+import rpr.events.models.User;
 
 import java.util.HashMap;
 
@@ -37,22 +39,27 @@ public class UserSessionManager {
         public static final String KEY_EMAIL = "email";
 
         public static final String KEY_USER_ID = "user_id";
+        private Gson gson;
+        private  User user;
 
 
 
         // Constructor
         public UserSessionManager(Context context){
             this._context = context;
+            gson= new Gson();
             pref = _context.getSharedPreferences(PREFER_NAME, PRIVATE_MODE);
             editor = pref.edit();
         }
 
         //Create login session
-        public void createUserLoginSession(int user_id, String token){
+        public void createUserLoginSession(String userData, String token){
             // Storing login value as TRUE
+            user =gson.fromJson(userData,User.class);
             editor.putBoolean(IS_USER_LOGIN, true);
 
-            editor.putString(KEY_USER_ID, user_id+"");
+            editor.putString(KEY_USER_ID, user.getFirstname());
+            editor.putString(KEY_EMAIL, user.getEmail());
             editor.putString(TOKEN_KEY, token);
 
 

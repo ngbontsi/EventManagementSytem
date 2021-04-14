@@ -103,7 +103,7 @@ public class PastEvent extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
         session = new UserSessionManager(this);
         HashMap<String, String> user = session.getUserDetails();
-        usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
+//        usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
         createDatabase();
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         gridLayoutManager = new GridLayoutManager(this,1);

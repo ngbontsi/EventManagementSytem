@@ -83,7 +83,7 @@ public class DisplayEventList extends Fragment {
         queue = Volley.newRequestQueue(context);
         session = new UserSessionManager(getContext());
         HashMap<String, String> user = session.getUserDetails();
-        usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
+//        usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
         category_id =getArguments().getInt("category_id", 0);
         createDatabase();
         return inflater.inflate(R.layout.display_event_list_layout, container, false);

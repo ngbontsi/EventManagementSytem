@@ -15,11 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
+import com.android.volley.*;
 import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -27,10 +24,12 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import rpr.events.models.User;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static rpr.events.UserSessionManager.KEY_USER_ID;
 import static rpr.events.constants.Constants.EMAIL_REGEX;
 import static rpr.events.utils.EmailUtils.isValidMail;
 
@@ -42,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView registerLink;
     UserSessionManager session;
     RequestQueue queue;
+    private User user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = (EditText) findViewById(R.id.etPassword);
         bLogin = (Button) findViewById(R.id.bLogin);
         registerLink = (TextView) findViewById(R.id.tvRegister);
-
+        user = new User();
         registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,9 +141,11 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         final String email = etEmail.getText().toString().trim();
                         final String password = etPassword.getText().toString();
+                        user.setEmail(email);
+                        user.setPassword(password);
+                        final String jsonBody = user.toString();
 
-
-                        StringRequest loginRequest = new StringRequest(Method.GET, getResources().getString(R.string.Login_url),
+                        StringRequest loginRequest = new StringRequest(Method.POST, getResources().getString(R.string.Login_url),
                                 new Response.Listener<String>()
                                 {
                                     @Override
@@ -154,13 +156,9 @@ public class LoginActivity extends AppCompatActivity {
                                             boolean success = jsonResponse.getBoolean("success");
                                             if (success) {
                                                 UserSessionManager session = new UserSessionManager(getApplicationContext());
-                                                session.createUserLoginSession(jsonResponse.getInt("user_id"), jsonResponse.getString("RANDOM_TOKEN_SECRET"));
+                                                session.createUserLoginSession(jsonResponse.getString("user"), jsonResponse.getString("token"));
 
-                                                final int user_id = jsonResponse.getInt("user_id");
-                                                final String token = jsonResponse.getString("RANDOM_TOKEN_SECRET");
-
-
-                                                Toast.makeText(getApplicationContext(), "Login Successful " + jsonResponse.getString("name"), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), "Login Successful " + session.getUserDetails().get(KEY_USER_ID), Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(LoginActivity.this, NavBar.class);
 
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -187,10 +185,19 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onErrorResponse(VolleyError error) {
                                         // error
 
-                                        Snackbar.make(v, "Couldn't connect to internet",Snackbar.LENGTH_SHORT).show();
+                                        Snackbar.make(v, "Couldn't connect to internet"+error.getMessage(),Snackbar.LENGTH_SHORT).show();
                                     }
                                 }
                         ) {
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/json; charset=utf-8";
+                            }
+                            @Override
+                            public byte[] getBody() throws AuthFailureError {
+                                return jsonBody == null ? null : jsonBody.getBytes();
+                            }
+
                             @Override
                             protected Map<String, String> getParams()
                             {

@@ -75,8 +75,8 @@ public class UserProfile extends Fragment {
         name = user.get(UserSessionManager.KEY_NAME);
         email = user.get(UserSessionManager.KEY_EMAIL);
         user_id = user.get(UserSessionManager.KEY_USER_ID);
-        usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
-        usertype = user.get(UserSessionManager.KEY_USERTYPE);
+//        usertype_id = user.get(UserSessionManager.KEY_USERTYPE_ID);
+//        usertype = user.get(UserSessionManager.KEY_USERTYPE);
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
 
