@@ -17,16 +17,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import rpr.events.models.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Spinner usertypeSpinner;
     private Button bRegister;
     private Context context = null;
+    private User user;
 
     RequestQueue queue;
     @Override
@@ -54,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
         etName = (EditText) findViewById(R.id.etName);
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
+        user = new User();
         usertypeSpinner = (Spinner) findViewById(R.id.usertype_spinner);
         bRegister = (Button) findViewById(R.id.bRegister);
         getusertype();
@@ -151,7 +151,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (etName.getText().toString().trim().equals("")){
                     Snackbar.make(v, "Please specify Name", Snackbar.LENGTH_SHORT).show();
                 }
-                else if(etEmail.getText().toString().trim().equals("") || !(etEmail.getText().toString().trim().matches(EMAIL_REGEX))){
+                else if(etEmail.getText().toString().trim().equals("") || !(isValidMail(etEmail.getText().toString()))){
                     Snackbar.make(v, "Please specify valid Email", Snackbar.LENGTH_SHORT).show();
                 }
                 else if(etPassword.getText().toString().length() < 8){
@@ -162,7 +162,10 @@ public class RegisterActivity extends AppCompatActivity {
                     final String email = etEmail.getText().toString().trim();
                     final int usertype_id = usertypeSpinner.getSelectedItemPosition()+1;
                     final String password = etPassword.getText().toString();
-
+                        user.setFirstname(name);
+                        user.setEmail(email);
+                        user.setPassword(password);
+                        final String jsonBody = user.toString();
 
 
                         StringRequest registerRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.Register_url),
@@ -208,7 +211,15 @@ public class RegisterActivity extends AppCompatActivity {
                                 Snackbar.make(v, "Couldn't connect to internet",Snackbar.LENGTH_SHORT).show();
                             }
                         }
-                        ) {
+                        ){
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/json; charset=utf-8";
+                            }
+                            @Override
+                            public byte[] getBody() throws AuthFailureError {
+                                return jsonBody == null ? null : jsonBody.getBytes();
+                            }
                             @Override
                             protected Map<String, String> getParams()
                             {

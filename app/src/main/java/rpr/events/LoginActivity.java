@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static rpr.events.constants.Constants.EMAIL_REGEX;
+import static rpr.events.utils.EmailUtils.isValidMail;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -95,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s)  {
                 boolean iitrpr_email = etEmail.getText().toString().matches(EMAIL_REGEX);
-                if (!iitrpr_email){
+                if (!isValidMail(etEmail.getText().toString())){
                     etEmail.setError("Invalid Email");
                 }
                 else{
@@ -141,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                         final String password = etPassword.getText().toString();
 
 
-                        StringRequest loginRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.Login_url),
+                        StringRequest loginRequest = new StringRequest(Method.GET, getResources().getString(R.string.Login_url),
                                 new Response.Listener<String>()
                                 {
                                     @Override
@@ -152,65 +154,10 @@ public class LoginActivity extends AppCompatActivity {
                                             boolean success = jsonResponse.getBoolean("success");
                                             if (success) {
                                                 UserSessionManager session = new UserSessionManager(getApplicationContext());
-                                                session.createUserLoginSession(jsonResponse.getString("name"), jsonResponse.getString("email"), jsonResponse.getInt("user_id"), jsonResponse.getInt("usertype_id"), jsonResponse.getString("usertype"),jsonResponse.getInt("usertypes"), jsonResponse.getString("created"));
+                                                session.createUserLoginSession(jsonResponse.getInt("user_id"), jsonResponse.getString("RANDOM_TOKEN_SECRET"));
 
-                                                FirebaseMessaging.getInstance().subscribeToTopic("0");
-                                                for (int i=1; i<jsonResponse.getInt("usertypes");i++){
-                                                    if (i==jsonResponse.getInt("usertype_id")){
-                                                        FirebaseMessaging.getInstance().subscribeToTopic(i+"");
-                                                    }
-                                                    else{
-                                                        FirebaseMessaging.getInstance().unsubscribeFromTopic(i+"");
-                                                    }
-                                                }
-
-                                                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.firebase_pref),MODE_PRIVATE);
                                                 final int user_id = jsonResponse.getInt("user_id");
-                                                final String token = sharedPreferences.getString(getString(R.string.firebase_token),"");
-                                                StringRequest fcmRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.updateFCMtoken_url),
-                                                        new Response.Listener<String>() {
-                                                            @Override
-                                                            public void onResponse(String response) {
-
-                                                                //                        try{
-                                                                //                            JSONObject jsonResponse = new JSONObject(response);
-                                                                //                            boolean success = jsonResponse.getBoolean("success");
-                                                                //
-                                                                //                            if (success) {
-                                                                //
-                                                                //
-                                                                //
-                                                                //                            } else {
-                                                                //
-                                                                //
-                                                                //                            }
-                                                                //                        }catch (JSONException e) {
-                                                                //                            e.printStackTrace();
-                                                                //                        }
-
-                                                            }
-                                                        }, new Response.ErrorListener() {
-                                                    @Override
-                                                    public void onErrorResponse(VolleyError error) {
-                                                        // error
-
-                                                    }
-                                                }
-                                                ) {
-                                                    @Override
-                                                    protected Map<String, String> getParams() {
-                                                        Map<String, String> params = new HashMap<String, String>();
-                                                        params.put("user_id", user_id+"");
-                                                        params.put("token", token);
-
-
-                                                        return params;
-                                                    }
-
-                                                };
-
-                                                queue.add(fcmRequest);
-
+                                                final String token = jsonResponse.getString("RANDOM_TOKEN_SECRET");
 
 
                                                 Toast.makeText(getApplicationContext(), "Login Successful " + jsonResponse.getString("name"), Toast.LENGTH_SHORT).show();

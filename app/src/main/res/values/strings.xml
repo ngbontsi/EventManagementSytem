@@ -1,22 +1,21 @@
 <resources>
-    <string name="listAll_url">http://10.1.1.19/~2015csb1021/event/listAll.php"</string>
-    <string name="listPast_url">http://10.1.1.19/~2015csb1021/event/listPast.php"</string>
-    <string name="listOrganised_url">http://10.1.1.19/~2015csb1021/event/listOrganised.php"</string>
-    <string name="listBookmark_url">http://10.1.1.19/~2015csb1021/event/listBookmark.php"</string>
-    <string name="event_display_url">http://10.1.1.19/~2015csb1021/event/getEvent.php</string>
-    <string name="category_url">http://10.1.1.19/~2015csb1021/event/category.php</string>
+    <string name="listAll_url">http://10.0.2.2:3000/api/event/listAll"</string>
+    <string name="listPast_url">http://10.0.2.2:3000/api/event/listPast"</string>
+    <string name="listOrganised_url">http://10.0.2.2:3000/api/event/listOrganised"</string>
+    <string name="listBookmark_url">http://10.0.2.2:3000/api/event/listBookmark"</string>
+    <string name="event_display_url">http://10.0.2.2:3000/api/event/getEvent</string>
+    <string name="category_url">http://10.0.2.2:3000/api/event/category</string>
 
 
-    <string name="addEvent_url">http://10.1.1.19/~2015csb1021/event/addEvent.php</string>
-    <string name="updateEvent_url">http://10.1.1.19/~2015csb1021/event/updateEvent.php</string>
-    <string name="deleteEvent_url">http://10.1.1.19/~2015csb1021/event/deleteEvent.php</string>
-    <string name="usertype_url">http://10.1.1.19/~2015csb1021/event/usertype.php</string>
-    <string name="categoryRegister_url">http://10.1.1.19/~2015csb1021/event/categoryRegister.php</string>
+    <string name="addEvent_url">http://10.0.2.2:3000/api/event/addEvent</string>
+    <string name="updateEvent_url">http://10.0.2.2:3000/api/event/updateEvent</string>
+    <string name="deleteEvent_url">http://10.0.2.2:3000/api/event/deleteEvent</string>
+    <string name="usertype_url">http://10.0.2.2:3000/api/event/usertype</string>
+    <string name="categoryRegister_url">http://10.0.2.2:3000/api/event/categoryRegister</string>
 
 
-    <string name="Register_url">http://localhost:3000/api/stuff</string>
-
-    <string name="Login_url">http://10.1.1.19/~2015csb1021/event/Login.php</string>
+    <string name="Register_url">http://10.0.2.2:3000/api/auth/signup</string>
+    <string name="Login_url">http://10.0.2.2:3000/api/auth/login</string>
     <string name="usertypeRegister_url">http://10.1.1.19/~2015csb1021/event/usertypeRegister.php</string>
 
     <string name="getBookmark_url">http://10.1.1.19/~2015csb1021/event/getBookmark.php</string>

@@ -27,10 +27,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -48,6 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.util.Log.e;
+import static rpr.events.constants.Constants.TOKEN_KEY;
 
 
 public class OrganiseEvent extends Fragment {
@@ -271,6 +269,15 @@ public class OrganiseEvent extends Fragment {
                         }
                     }
                     ) {
+                        //This is for Headers If You Needed
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Content-Type", "application/json; charset=UTF-8");
+                            params.put("token", TOKEN_KEY);
+                            return params;
+                        }
+
                         @Override
                         protected Map<String, String> getParams()
                         {

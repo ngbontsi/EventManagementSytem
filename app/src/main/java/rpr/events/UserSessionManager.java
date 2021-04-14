@@ -8,6 +8,8 @@ import android.content.SharedPreferences.Editor;
 
 import java.util.HashMap;
 
+import static rpr.events.constants.Constants.TOKEN_KEY;
+
 public class UserSessionManager {
 
         // Shared Preferences reference
@@ -36,10 +38,7 @@ public class UserSessionManager {
 
         public static final String KEY_USER_ID = "user_id";
 
-        public static final String KEY_USERTYPE = "usertype";
-        public static final String KEY_USERTYPE_ID = "usertype_id";
-        public static final String KEY_USERTYPES = "usertypes";
-        public static final String KEY_CREATED = "created";
+
 
         // Constructor
         public UserSessionManager(Context context){
@@ -49,20 +48,12 @@ public class UserSessionManager {
         }
 
         //Create login session
-        public void createUserLoginSession(String name, String email, int user_id, int usertype_id, String usertype, int usertypes, String created){
+        public void createUserLoginSession(int user_id, String token){
             // Storing login value as TRUE
             editor.putBoolean(IS_USER_LOGIN, true);
 
-            // Storing name in pref
-            editor.putString(KEY_NAME, name);
-
-            // Storing email in pref
-            editor.putString(KEY_EMAIL, email);
             editor.putString(KEY_USER_ID, user_id+"");
-            editor.putString(KEY_USERTYPE_ID, usertype_id+"");
-            editor.putString(KEY_USERTYPE, usertype);
-            editor.putString(KEY_USERTYPES, usertypes+"");
-            editor.putString(KEY_CREATED, created);
+            editor.putString(TOKEN_KEY, token);
 
 
             // commit changes
@@ -113,10 +104,7 @@ public class UserSessionManager {
 
             user.put(KEY_USER_ID, pref.getString(KEY_USER_ID, null));
 
-            user.put(KEY_USERTYPE_ID, pref.getString(KEY_USERTYPE_ID, null));
-            user.put(KEY_USERTYPE, pref.getString(KEY_USERTYPE, null));
-            user.put(KEY_USERTYPES, pref.getString(KEY_USERTYPES, null));
-            user.put(KEY_CREATED, pref.getString(KEY_CREATED, null));
+            user.put(TOKEN_KEY, pref.getString(TOKEN_KEY, null));
 
             // return user
             return user;
